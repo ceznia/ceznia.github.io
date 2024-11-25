@@ -2,9 +2,10 @@ let message = "InteractionDesignInteractionDesign";
 let bg;
 let font;
 let waves = [];
+let seed = 23563;
 
 function preload() {
-  font = loadFont('assets/fonts/PicNic-Regular.otf');
+  font = loadFont('fonts/assets/PicNic-Regular.otf');
 }
 
 function setup() {
@@ -19,7 +20,7 @@ function setup() {
 
 function draw() {
   background(bg);
-
+  randomSeed(seed);
   noFill();
   strokeWeight(5);
   stroke(20, 250, 40);
@@ -51,6 +52,7 @@ function textWave(offset, angle) {
 }
 
 function mouseClicked() {
+  seed = random(456812);
   let newWave = {
     offset: waves.length, 
     angle: random(TWO_PI),
