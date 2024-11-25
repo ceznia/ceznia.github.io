@@ -56,9 +56,9 @@ function mouseClicked() {
     angle: random(TWO_PI),
   };
   waves.push(newWave);
-}
 
-function keyPressed(spacebar) {
-	waves = [];
-	background(0);
+  if (waves.length >= 15) {
+    waves = [];
+    background(0);
   }
+}

@@ -1,29 +1,81 @@
-let len = 10;
-let bg;
+let font;
+let radius = 5; let angle = 0;
+let isDissolving = false;
+let points = []; let directions = [];
+
+function preload() {
+  font = loadFont('assets/fonts/PicNic-Regular.otf'); 
+}
 
 function setup() {
-	createCanvas(windowWidth,windowHeight);
-	background(0);
-	frameRate(30);
-	rectMode(CENTER);
-	bg = color(200, 0, 58);
+  createCanvas(windowWidth, windowHeight);
+  textFont(font);
+  angleMode(DEGREES);
+  background(0);
+  points = font.textToPoints("IAD", windowWidth / 3, windowHeight / 1.6, 400);
+
+  setupDirections();
 }
 
-function  draw() {
-	background(bg);
-	noFill();
-	strokeWeight(5);
-	stroke(0,130, 140);
-	
-	ellipse(pmouseX, pmouseY, len, len)
-  //height - mouseY mirrors the object along y axis
-  	ellipse(pmouseX, height - pmouseY, len, len)
-	//increase the lenght by 1px every frame
-	len++;
-	
-	if(mouseIsPressed) {
-		len = 0;  
-		bg = color(189, 3, 33);
-	}
+function draw() {
+  background(0);
+
+  let centerX = width / 2;
+  let centerY = height / 2;
+
+  if (isDissolving) {
+    // Punkte lösen sich auf in random Richtung
+    for (let i = 0; i < points.length; i++) {
+      let p = points[i];
+      p.x += directions[i].x;
+      p.y += directions[i].y;
+
+      let d = dist(mouseX, mouseY, p.x, p.y);
+    
+      fill(random(255), random(255), random(255), 100);
+      noStroke();
+      ellipse(p.x, p.y, 10);
+    }
+  } else {
+    // Shaking basierend auf der Mausposition
+    let maxDist = dist(0, 0, width, height);
+
+    for (let i = 0; i < points.length; i++) {
+      let p = points[i];
+      
+      let d = dist(mouseX, mouseY, p.x, p.y);
+      let shakiness = map(d, 0, maxDist, 40, 0);
+      let centerDist = dist(mouseX, mouseY, centerX, centerY);
+      let newRadius = map(centerDist, 0, width / 4, 15, 5);
+
+      let redColor = map(d, 0, width / 2, 255, 0);
+      fill(redColor, redColor, redColor);
+      noStroke();
+      ellipse(p.x + newRadius * cos(angle * shakiness + i * 10), p.y + newRadius * sin(angle * shakiness + i * 10), 10);
+    }
+  }
+
+  angle += 1;
 }
 
+function mousePressed() {
+  // Zurücksetzen des Textes
+  if (isDissolving) {
+    isDissolving = false;
+    points = font.textToPoints("IAD", windowWidth / 3, windowHeight / 1.6, 400);
+    setupDirections();
+  } else {
+    isDissolving = true; 
+  }
+}
+
+// Berechne zufällige Richtungen für Auflösungs-Effekt
+function setupDirections() {
+  directions = [];
+  for (let i = 0; i < points.length; i++) {
+    directions.push({
+      x: random(-3, 3),
+      y: random(-3, 3)
+    });
+  }
+}
