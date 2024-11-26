@@ -44,7 +44,7 @@ function textWave(offset, angle) {
     let x = sinWave * 200 * 0.3;
     let y = i * yspace;
 
-	let rotatedX = x * cos(angle) - y * sin(angle);
+	  let rotatedX = x * cos(angle) - y * sin(angle);
     let rotatedY = x * sin(angle) + y * cos(angle);
 
     text(message[i], rotatedX + width / 2, rotatedY + height / 2);

@@ -4,7 +4,7 @@ let isDissolving = false;
 let points = []; let directions = [];
 
 function preload() {
-  font = loadFont('assets/fonts/PicNic-Regular.otf'); 
+  font = loadFont('assets/fonts/Roboto-Bold.ttf'); 
 }
 
 function setup() {
@@ -13,7 +13,6 @@ function setup() {
   angleMode(DEGREES);
   background(0);
   points = font.textToPoints("IAD", windowWidth / 3, windowHeight / 1.6, 400);
-
   setupDirections();
 }
 
@@ -24,7 +23,7 @@ function draw() {
   let centerY = height / 2;
 
   if (isDissolving) {
-    // Punkte lösen sich auf in random Richtung
+    // Points dissolve in random directions
     for (let i = 0; i < points.length; i++) {
       let p = points[i];
       p.x += directions[i].x;
@@ -32,12 +31,12 @@ function draw() {
 
       let d = dist(mouseX, mouseY, p.x, p.y);
     
-      fill(random(255), random(255), random(255), 100);
+      fill(255, 100);
       noStroke();
       ellipse(p.x, p.y, 10);
     }
   } else {
-    // Shaking basierend auf der Mausposition
+    // Shaking based on mouse position
     let maxDist = dist(0, 0, width, height);
 
     for (let i = 0; i < points.length; i++) {
@@ -59,7 +58,7 @@ function draw() {
 }
 
 function mousePressed() {
-  // Zurücksetzen des Textes
+  // Reverse to text
   if (isDissolving) {
     isDissolving = false;
     points = font.textToPoints("IAD", windowWidth / 3, windowHeight / 1.6, 400);
@@ -69,7 +68,7 @@ function mousePressed() {
   }
 }
 
-// Berechne zufällige Richtungen für Auflösungs-Effekt
+// Calculate random directions for each point
 function setupDirections() {
   directions = [];
   for (let i = 0; i < points.length; i++) {
